@@ -1,0 +1,636 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Neon",
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#operators"
+		},
+		{
+			"include": "#functions"
+		},
+		{
+			"include": "#storage_types"
+		},
+		{
+			"include": "#numeric_literals"
+		},
+		{
+			"include": "#variables"
+		}
+	],
+	"repository": {
+		"comments": {
+			"patterns": [
+				{
+					"match": "//.*",
+					"name": "comment.double-slash.neon"
+				},
+				{
+					"match": "/!/.+",
+					"name": "comment.warning.neon"
+				},
+				{
+					"match": "/\\?/.+",
+					"name": "comment.question.neon"
+				},
+				{
+					"match": "/\\.\\.\\.\\/.+",
+					"name": "comment.etc.neon"
+				},
+				{
+					"match": "/\\+/.+",
+					"name": "comment.suggestion.neon"
+				},
+				{
+					"match": "/-/.+",
+					"name": "comment.deprecated.neon"
+				},
+				{
+					"match": "/@/.+",
+					"name": "comment.reference.neon"
+				},
+				{
+					"match": "/#/.+",
+					"name": "comment.todo.neon"
+				},
+				{
+					"match": "\/\\p{Emoji}\uFE0F?\/.+",
+					"name": "comment.emoji.neon"
+				},
+				{
+					"match": "/~/.+",
+					"name": "comment.experimental.neon"
+				},
+				{
+					"match": "/\\*/.+",
+					"name": "comment.bug.neon"
+				},
+				{
+					"begin": "/\\*",
+					"end": "\\*/",
+					"name": "comment.block.neon",
+					"captures": {
+						"0": {
+							"name": "punctuation.definition.comment.neon"
+						}
+					}
+				}
+			]
+		},
+		"strings": {
+			"name": "string.quoted.double.neon",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.format.placeholder.neon",
+					"match": "\\{(\\w*)\\}",
+					"captures": {
+						"1": {
+							"name": "storage.type.neon"
+						}
+					}
+				}
+			]
+		},
+		"keywords": {
+			"patterns": [
+				{
+					"comment": "Flow control keywords",
+					"match": "\\b(loop|for|while|until|do|pulse|before|after|break|if|else|is|then|case|of|in|!>|<!|\\|>|<\\|)\\b",
+					"name": "keyword.control.neon"
+				},
+				{
+					"match": "=>",
+					"name": "keyword.control.neon"
+				},
+				{
+					"comment": "Variables keywords",
+					"match": "(\\blet(!)?)\\s",
+					"name": "storage.type.neon"
+				},
+				{
+					"match": "\\b(true|false|nil)\\b",
+					"name": "constant.language.neon"
+				}
+			]
+		},
+		"operators": {
+			"comment": "Note that the order here is very important!",
+			"patterns": [
+				{
+					"match": "(?<=[^a-zA-Z~])(\\*|&)(?=\\w)",
+					"name": "keyword.operator.address.neon"
+				},
+				{
+					"match": ":",
+					"name": "keyword.operator.colon"
+				},
+				{
+					"match": ",",
+					"name": "keyword.operator.comma"
+				},
+				{
+					"match": "\\-\\-",
+					"name": "keyword.operator.decrement.neon"
+				},
+				{
+					"match": "\\+\\+",
+					"name": "keyword.operator.increment.neon"
+				},
+				{
+					"match": "(==|!=|<=|>=|<(?!<)|>(?!>))",
+					"name": "keyword.operator.comparison.neon"
+				},
+				{
+					"match": "(&&|\\|\\||!)",
+					"name": "keyword.operator.logical.neon"
+				},
+				{
+					"match": "(=|\\+=|\\-=|\\*=|/=|%=|<<=|>>=|>>>=|<<<=|&=|~&=|\\|=|~\\|=|\\^=|~\\^=)",
+					"name": "keyword.operator.assignment.neon"
+				},
+				{
+					"match": "(\\+|\\-|\\*|/|%)",
+					"name": "keyword.operator.arithmetic.neon"
+				},
+				{
+					"match": "<<|>>|<<<|>>>|~|((~?)&|\\||\\^)",
+					"name": "keyword.operator.arithmetic.bitwise.neon"
+				},
+				{
+					"match": "\\.\\.\\.",
+					"name": "keyword.operator.ellipsis.neon"
+				}
+			]
+		},
+		"functions": {
+			"patterns": [
+				{
+					"comment": "Function declarations",
+					"name": "function_name",
+					"match": "\\b(fn!|fn)\\s+(\\w+)\\s*(\\([^\\)]*\\))?\\s*(=>)",
+					"captures": {
+						"1": {
+							"name": "keyword.function.neon"
+						},
+						"2": {
+							"name": "entity.name.function.neon"
+						},
+						"3": {
+							"patterns": [
+								{
+									"match": "\\d\\w*",
+									"name": "invalid.illegal.identifier.neon"
+								}
+							]
+						},
+						"4": {
+							"name": "keyword.control.neon"
+						}
+					}
+				},
+				{
+					"comment": "Method declarations",
+					"name": "method_name",
+					"match": "^(fn!|fn)\\s+(\\w+)(\\s*(=>)\\s*(\\w+))?",
+					"captures": {
+						"1": {
+							"name": "keyword.function.neon"
+						},
+						"2": {
+							"name": "entity.name.function.neon"
+						},
+						"3": {
+							"name": "keyword.control.neon"
+						}
+					}
+				},
+				{
+					"comment": "Built-in functions",
+					"match": "\\b(print|println)\\b",
+					"name": "support.function.builtin.neon"
+				},
+				{
+					"comment": "Functions",
+					"match": "(\\bfn\\b)|(\\w+)(?=\\()",
+					"captures": {
+						"1": {
+							"name": "keyword.function.neon"
+						},
+						"2": {
+							"patterns": [
+								{
+									"match": "\\d\\w*",
+									"name": "invalid.illegal.identifier.neon"
+								},
+								{
+									"match": "\\w+",
+									"name": "support.function.neon"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		"storage_types": {
+			"patterns": [
+				{
+					"match": "\\bbool\\b",
+					"name": "storage.type.boolean.neon"
+				},
+				{
+					"match": "\\b(int|float|double)\\b",
+					"name": "storage.type.numeric.neon"
+				},
+				{
+					"match": "(\\b|\\*)((u|i)(8|16|32|64)|f(32|64))\\b",
+					"name": "storage.type.numeric.neon"
+				},
+				{
+					"match": "\\bstring\\b",
+					"name": "storage.type.string.neon"
+				},
+				{
+					"comment": "Tipos avancados",
+					"match": "\\b(any|obj)\\b",
+					"name": "storage.type.string.neon"
+				}
+			]
+		},
+		"numeric_literals": {
+			"match": "(?<!\\w)\\.?\\d(?:(?:[0-9a-zA-Z_\\.])|(?<=[eEpP])[+-])*",
+			"captures": {
+				"0": {
+					"patterns": [
+						{
+							"begin": "(?=.)",
+							"end": "(?:\\n|$)",
+							"patterns": [
+								{
+									"match": "(?:(?:(?:(?:(?:\\G(?=[0-9.])(?!0[xXbBoO])([0-9](?:[0-9]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)((?:(?<=[0-9])\\.|\\.(?=[0-9])))([0-9](?:[0-9]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)?(?:(?<!_)([eE])(\\+?)(\\-?)((?:[0-9](?:[0-9]|(?:(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)))?(i(?!\\w))?(?:\\n|$)|\\G(?=[0-9.])(?!0[xXbBoO])([0-9](?:[0-9]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)(?<!_)([eE])(\\+?)(\\-?)((?:[0-9](?:[0-9]|(?:(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*))(i(?!\\w))?(?:\\n|$))|\\G((?:(?<=[0-9])\\.|\\.(?=[0-9])))([0-9](?:[0-9]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)(?:(?<!_)([eE])(\\+?)(\\-?)((?:[0-9](?:[0-9]|(?:(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)))?(i(?!\\w))?(?:\\n|$))|(\\G0[xX])_?([0-9a-fA-F](?:[0-9a-fA-F]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)((?:(?<=[0-9a-fA-F])\\.|\\.(?=[0-9a-fA-F])))([0-9a-fA-F](?:[0-9a-fA-F]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)?(?<!_)([pP])(\\+?)(\\-?)((?:[0-9](?:[0-9]|(?:(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*))(i(?!\\w))?(?:\\n|$))|(\\G0[xX])_?([0-9a-fA-F](?:[0-9a-fA-F]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)(?<!_)([pP])(\\+?)(\\-?)((?:[0-9](?:[0-9]|(?:(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*))(i(?!\\w))?(?:\\n|$))|(\\G0[xX])((?:(?<=[0-9a-fA-F])\\.|\\.(?=[0-9a-fA-F])))([0-9a-fA-F](?:[0-9a-fA-F]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)(?<!_)([pP])(\\+?)(\\-?)((?:[0-9](?:[0-9]|(?:(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*))(i(?!\\w))?(?:\\n|$))",
+									"captures": {
+										"1": {
+											"name": "constant.numeric.decimal.neon",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric.neon"
+												}
+											]
+										},
+										"2": {
+											"name": "punctuation.separator.constant.numeric.neon"
+										},
+										"3": {
+											"name": "constant.numeric.decimal.point.neon"
+										},
+										"4": {
+											"name": "constant.numeric.decimal.neon",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric.neon"
+												}
+											]
+										},
+										"5": {
+											"name": "punctuation.separator.constant.numeric.neon"
+										},
+										"6": {
+											"name": "keyword.other.unit.exponent.decimal.neon"
+										},
+										"7": {
+											"name": "keyword.operator.plus.exponent.decimal.neon"
+										},
+										"8": {
+											"name": "keyword.operator.minus.exponent.decimal.neon"
+										},
+										"9": {
+											"name": "constant.numeric.exponent.decimal.neon",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric.neon"
+												}
+											]
+										},
+										"10": {
+											"name": "keyword.other.unit.imaginary.neon"
+										},
+										"11": {
+											"name": "constant.numeric.decimal.neon",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric.neon"
+												}
+											]
+										},
+										"12": {
+											"name": "punctuation.separator.constant.numeric.neon"
+										},
+										"13": {
+											"name": "keyword.other.unit.exponent.decimal.neon"
+										},
+										"14": {
+											"name": "keyword.operator.plus.exponent.decimal.neon"
+										},
+										"15": {
+											"name": "keyword.operator.minus.exponent.decimal.neon"
+										},
+										"16": {
+											"name": "constant.numeric.exponent.decimal.neon",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric.neon"
+												}
+											]
+										},
+										"17": {
+											"name": "keyword.other.unit.imaginary.neon"
+										},
+										"18": {
+											"name": "constant.numeric.decimal.point.neon"
+										},
+										"19": {
+											"name": "constant.numeric.decimal.neon",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric.neon"
+												}
+											]
+										},
+										"20": {
+											"name": "punctuation.separator.constant.numeric.neon"
+										},
+										"21": {
+											"name": "keyword.other.unit.exponent.decimal.neon"
+										},
+										"22": {
+											"name": "keyword.operator.plus.exponent.decimal.neon"
+										},
+										"23": {
+											"name": "keyword.operator.minus.exponent.decimal.neon"
+										},
+										"24": {
+											"name": "constant.numeric.exponent.decimal.neon",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric.neon"
+												}
+											]
+										},
+										"25": {
+											"name": "keyword.other.unit.imaginary.neon"
+										},
+										"26": {
+											"name": "keyword.other.unit.hexadecimal.neon"
+										},
+										"27": {
+											"name": "constant.numeric.hexadecimal.neon",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric.neon"
+												}
+											]
+										},
+										"28": {
+											"name": "punctuation.separator.constant.numeric.neon"
+										},
+										"29": {
+											"name": "constant.numeric.hexadecimal.neon"
+										},
+										"30": {
+											"name": "constant.numeric.hexadecimal.neon",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric.neon"
+												}
+											]
+										},
+										"31": {
+											"name": "punctuation.separator.constant.numeric.neon"
+										},
+										"32": {
+											"name": "keyword.other.unit.exponent.hexadecimal.neon"
+										},
+										"33": {
+											"name": "keyword.operator.plus.exponent.hexadecimal.neon"
+										},
+										"34": {
+											"name": "keyword.operator.minus.exponent.hexadecimal.neon"
+										},
+										"35": {
+											"name": "constant.numeric.exponent.hexadecimal.neon",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric.neon"
+												}
+											]
+										},
+										"36": {
+											"name": "keyword.other.unit.imaginary.neon"
+										},
+										"37": {
+											"name": "keyword.other.unit.hexadecimal.neon"
+										},
+										"38": {
+											"name": "constant.numeric.hexadecimal.neon",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric.neon"
+												}
+											]
+										},
+										"39": {
+											"name": "punctuation.separator.constant.numeric.neon"
+										},
+										"40": {
+											"name": "keyword.other.unit.exponent.hexadecimal.neon"
+										},
+										"41": {
+											"name": "keyword.operator.plus.exponent.hexadecimal.neon"
+										},
+										"42": {
+											"name": "keyword.operator.minus.exponent.hexadecimal.neon"
+										},
+										"43": {
+											"name": "constant.numeric.exponent.hexadecimal.neon",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric.neon"
+												}
+											]
+										},
+										"44": {
+											"name": "keyword.other.unit.imaginary.neon"
+										},
+										"45": {
+											"name": "keyword.other.unit.hexadecimal.neon"
+										},
+										"46": {
+											"name": "constant.numeric.hexadecimal.neon"
+										},
+										"47": {
+											"name": "constant.numeric.hexadecimal.neon",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric.neon"
+												}
+											]
+										},
+										"48": {
+											"name": "punctuation.separator.constant.numeric.neon"
+										},
+										"49": {
+											"name": "keyword.other.unit.exponent.hexadecimal.neon"
+										},
+										"50": {
+											"name": "keyword.operator.plus.exponent.hexadecimal.neon"
+										},
+										"51": {
+											"name": "keyword.operator.minus.exponent.hexadecimal.neon"
+										},
+										"52": {
+											"name": "constant.numeric.exponent.hexadecimal.neon",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric.neon"
+												}
+											]
+										},
+										"53": {
+											"name": "keyword.other.unit.imaginary.neon"
+										}
+									}
+								},
+								{
+									"match": "(?:(?:(?:\\G(?=[0-9.])(?!0[xXbBoO])([0-9](?:[0-9]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)(i(?!\\w))?(?:\\n|$)|(\\G0[bB])_?([01](?:[01]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)(i(?!\\w))?(?:\\n|$))|(\\G0[oO]?)_?((?:[0-7]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))+)(i(?!\\w))?(?:\\n|$))|(\\G0[xX])_?([0-9a-fA-F](?:[0-9a-fA-F]|((?<=[0-9a-fA-F])_(?=[0-9a-fA-F])))*)(i(?!\\w))?(?:\\n|$))",
+									"captures": {
+										"1": {
+											"name": "constant.numeric.decimal.neon",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric.neon"
+												}
+											]
+										},
+										"2": {
+											"name": "punctuation.separator.constant.numeric.neon"
+										},
+										"3": {
+											"name": "keyword.other.unit.imaginary.neon"
+										},
+										"4": {
+											"name": "keyword.other.unit.binary.neon"
+										},
+										"5": {
+											"name": "constant.numeric.binary.neon",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric.neon"
+												}
+											]
+										},
+										"6": {
+											"name": "punctuation.separator.constant.numeric.neon"
+										},
+										"7": {
+											"name": "keyword.other.unit.imaginary.neon"
+										},
+										"8": {
+											"name": "keyword.other.unit.octal.neon"
+										},
+										"9": {
+											"name": "constant.numeric.octal.neon",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric.neon"
+												}
+											]
+										},
+										"10": {
+											"name": "punctuation.separator.constant.numeric.neon"
+										},
+										"11": {
+											"name": "keyword.other.unit.imaginary.neon"
+										},
+										"12": {
+											"name": "keyword.other.unit.hexadecimal.neon"
+										},
+										"13": {
+											"name": "constant.numeric.hexadecimal.neon",
+											"patterns": [
+												{
+													"match": "(?<=[0-9a-fA-F])_(?=[0-9a-fA-F])",
+													"name": "punctuation.separator.constant.numeric.neon"
+												}
+											]
+										},
+										"14": {
+											"name": "punctuation.separator.constant.numeric.neon"
+										},
+										"15": {
+											"name": "keyword.other.unit.imaginary.neon"
+										}
+									}
+								},
+								{
+									"match": "\\b-?(\\d+)(\\.\\.)-?(\\d+)\\b",
+									"captures": {
+										"1": {
+											"name": "constant.numeric.decimal.neon"
+										},
+										"2": {
+											"name": "keyword.control.neon"
+										},
+										"3": {
+											"name": "constant.numeric.decimal.neon"
+										}
+									}
+								},
+								{
+									"match": "(?:(?:[0-9a-zA-Z_\\.])|(?<=[eEpP])[+-])+",
+									"name": "invalid.illegal.constant.numeric.neon"
+								}
+							]
+						}
+					]
+				}
+			}
+		},
+		"variables": {
+			"patterns": [
+				{
+					"name": "variable.other.assignment.neon",
+					"match": "."
+				}
+			]
+		}
+	},
+	"scopeName": "source.neon"
+}
