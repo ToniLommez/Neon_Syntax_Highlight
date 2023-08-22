@@ -14,7 +14,11 @@
       "id": "neon",
       "aliases": ["Neon", "neon"],
       "extensions": [".ne",".on",".neon"],
-      "configuration": "./language-configuration.json"
+      "configuration": "./language-configuration.json",
+      "icon": {
+        "light": "neonLight.png",
+        "dark": "neonDark.png"
+      }
     }],
     "grammars": [{
       "language": "neon",

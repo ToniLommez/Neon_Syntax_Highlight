@@ -177,67 +177,58 @@
 			"patterns": [
 				{
 					"comment": "Function declarations",
-					"name": "function_name",
-					"match": "\\b(fn!|fn)\\s+(\\w+)\\s*(\\([^\\)]*\\))?\\s*(=>)",
-					"captures": {
-						"1": {
+					"begin": "\\b(fn(!)?)",
+					"end": "{",
+					"beginCaptures": {
+						"0": {
 							"name": "keyword.function.neon"
-						},
-						"2": {
-							"name": "entity.name.function.neon"
-						},
-						"3": {
-							"patterns": [
-								{
-									"match": "\\d\\w*",
-									"name": "invalid.illegal.identifier.neon"
+						}
+					},
+					"patterns": [
+						{
+							"match": "\\s+(\\w+)\\s*(?:\\(|$)",
+							"captures": {
+								"0": {
+									"name": "entity.name.function.neon"
 								}
-							]
+							}
 						},
-						"4": {
-							"name": "keyword.control.neon"
+						{
+							"include": "#storage_types"
+						},
+						{
+							"match": "!",
+							"name": "storage.type.neon"
 						}
-					}
+					]
 				},
-				{
-					"comment": "Method declarations",
-					"name": "method_name",
-					"match": "^(fn!|fn)\\s+(\\w+)(\\s*(=>)\\s*(\\w+))?",
-					"captures": {
-						"1": {
-							"name": "keyword.function.neon"
-						},
-						"2": {
-							"name": "entity.name.function.neon"
-						},
-						"3": {
-							"name": "keyword.control.neon"
-						}
-					}
-				},
+
 				{
 					"comment": "Built-in functions",
 					"match": "\\b(print|println)\\b",
 					"name": "support.function.builtin.neon"
 				},
 				{
-					"comment": "Functions",
-					"match": "(\\bfn\\b)|(\\w+)(?=\\()",
+					"comment": "Pipeline functions left",
+					"match": "(\\w+)\\s*(?:<\\|)",
 					"captures": {
-						"1": {
-							"name": "keyword.function.neon"
+						"0": {
+							"name": "keyword.operator.arithmetic.bitwise.neon"
 						},
-						"2": {
-							"patterns": [
-								{
-									"match": "\\d\\w*",
-									"name": "invalid.illegal.identifier.neon"
-								},
-								{
-									"match": "\\w+",
-									"name": "support.function.neon"
-								}
-							]
+						"1": {
+							"name": "entity.name.function.neon"
+						}
+					}
+				},
+				{
+					"comment": "Pipeline functions right",
+					"match": "(?<=\\|>)\\s*(\\w+)",
+					"captures": {
+						"0": {
+							"name": "entity.name.function.neon"
+						},
+						"1": {
+							"name": "entity.name.function.neon"
 						}
 					}
 				}
