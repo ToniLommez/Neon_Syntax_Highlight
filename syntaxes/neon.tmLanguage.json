@@ -75,6 +75,10 @@
 					"name": "comment.bug.neon"
 				},
 				{
+					"match": "#.+",
+					"name": "punctuation.definition.macro"
+				},
+				{
 					"begin": "/\\*",
 					"end": "\\*/",
 					"name": "comment.block.neon",
@@ -115,7 +119,7 @@
 				},
 				{
 					"comment": "Variables keywords",
-					"match": "(\\blet(!)?)\\s",
+					"match": "(\\blet(!|\\?)?(\\?)?)\\s",
 					"name": "storage.type.neon"
 				},
 				{
