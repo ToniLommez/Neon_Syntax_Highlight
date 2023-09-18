@@ -110,7 +110,7 @@
 			"patterns": [
 				{
 					"comment": "Flow control keywords",
-					"match": "\\b(loop|for|while|until|do|pulse|before|after|break|if|else|is|then|case|of|in|!>|<!|\\|>|<\\|)\\b",
+					"match": "\\b(loop|for|while|until|do|pulse|before|after|at|inside|break|if|else|then|case|of|in|error|!>|<!|\\|>|<\\|)\\b",
 					"name": "keyword.control.neon"
 				},
 				{
@@ -119,7 +119,7 @@
 				},
 				{
 					"comment": "Variables keywords",
-					"match": "(\\blet(!|\\?)?(\\?)?)\\s",
+					"match": "(\\b(let|pub|pri)(!|\\?)?(\\?)?)\\s",
 					"name": "storage.type.neon"
 				},
 				{
@@ -152,11 +152,11 @@
 					"name": "keyword.operator.increment.neon"
 				},
 				{
-					"match": "(==|!=|<=|>=|<(?!<)|>(?!>))",
+					"match": "(==|\\sis\\s|!=|<=|>=|<(?!<)|>(?!>))",
 					"name": "keyword.operator.comparison.neon"
 				},
 				{
-					"match": "(&&|\\|\\||!)",
+					"match": "(&&|\\|\\||!|(\\s(and|or|not)\\s))",
 					"name": "keyword.operator.logical.neon"
 				},
 				{
@@ -181,8 +181,8 @@
 			"patterns": [
 				{
 					"comment": "Function declarations",
-					"begin": "\\b(fn(!)?)",
-					"end": "{",
+					"begin": "\\b((fn|pub|get|set)(!)?)",
+					"end": "$|{|=\\s*(?![{}=])",
 					"beginCaptures": {
 						"0": {
 							"name": "keyword.function.neon"
@@ -190,7 +190,7 @@
 					},
 					"patterns": [
 						{
-							"match": "\\s+(\\w+)\\s*(?:\\(|$)",
+							"match": "\\s+(\\w+)\\s*",
 							"captures": {
 								"0": {
 									"name": "entity.name.function.neon"
