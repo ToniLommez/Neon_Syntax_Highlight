@@ -110,7 +110,7 @@
 			"patterns": [
 				{
 					"comment": "Flow control keywords",
-					"match": "\\b(loop|for|while|until|do|pulse|before|after|at|inside|break|if|else|then|case|of|in|error|!>|<!|\\|>|<\\|)\\b",
+					"match": "\\b(loop|for|while|until|do|pulse|before|after|at|inside|defer|break|if|else|then|case|of|in|error|!>|<!|\\|>|<\\|)\\b",
 					"name": "keyword.control.neon"
 				},
 				{
@@ -181,7 +181,7 @@
 			"patterns": [
 				{
 					"comment": "Function declarations",
-					"begin": "\\b((fn|pub|get|set)(!)?)",
+					"begin": "(?<=^|\\s)((fn|pub|get|set|import)(!)?)",
 					"end": "$|{|=\\s*(?![{}=])",
 					"beginCaptures": {
 						"0": {
@@ -209,7 +209,7 @@
 
 				{
 					"comment": "Built-in functions",
-					"match": "\\b(print|println)\\b",
+					"match": "(?<=^|\\s)(print|println|input)(?=\\s|$)",
 					"name": "support.function.builtin.neon"
 				},
 				{
